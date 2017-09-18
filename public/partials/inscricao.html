@@ -1,0 +1,102 @@
+<div id="inscricao" class="fundo" "col s12 m12 l12 xl12">
+    <div class="card">
+        <div class="row">
+            <div class="col l12 offset-l5 s12">
+                <div class="head col s12 m4">
+                    <h5><b>Informe seu CPF </b></h5>
+                    <input type="text" id="cpf" name="cpf" class="form-control col s12 m6" mask="999.999.999-99" required title="Digite um CPF válido" ng-model="cpf" placeholder="000.000.000-00">
+                    <a class="waves-effect btn col s12 m6" ng-click="verificaCpf(cpf)">Confirme</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form class="form-group" ng-submit="salva()">
+        <div class="card" ng-show="hideInscricao">
+            <div class="row">
+                <div class="col s12">
+                    <div class="text center">
+                        <h5><b>Dados Pessoais</b></h5>
+                    </div>
+                    <br>
+                    <div class="col s12">
+                        <label>Nome Completo:</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required ng-model="inscricao.nome">
+                    </div>
+                    <div class="col s12 m4">
+                        <label>Cidade:</label>
+                        <input type="text" class="form-control" id="cidade" name="cidade" required ng-model="inscricao.cidade">
+                    </div>
+                    <div class="col s12 m4">
+                        <label>Estado:</label>
+                        <input type="text" class="form-control" id="estado" name="estado" required ng-model="inscricao.estado">
+                    </div>
+                    <div class="col s12 m4">
+                        <label>País:</label>
+                        <input type="text" class="form-control" id="pais" name="pais" required ng-model="inscricao.pais">
+                    </div>
+                    <div class="col s12 m4">
+                        <label>Data de Nascimento:</label>
+                        <input type="date" class="form-control" id="nasc" name="nasc" required ng-model="inscricao.nasc">
+                    </div>
+                    <div class="col s12 m4">
+                        <label>Telefone:</label>
+                        <input type="text" class="form-control" id="contato" name="contato" required ng-model="inscricao.contato" placeholder="(99) 99999-9999">
+                    </div>
+                    <div class="col s12 m4">
+                        <label>E-mail:</label>
+                        <input type="text" class="form-control" id="email" name="email" required ng-model="inscricao.email" placeholder="exemplo@gmail.com">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" ng-show="hideInscricao">
+            <div class="row">
+                <div class="col s12">
+                    <span class="text center">
+                        <h5><b>Atividades do Evento</b></h5>
+                        <br>
+                    </span>
+                    <br>
+                    <ul class="tabs">
+                        <div class="tab col s2 m2" ng-repeat="data in datas">
+                            <a class="datas flow-text" ng-click="filtra(data) "><b>{{data | date:"dd/MM/yyyy"}}</b></a>
+                        </div>
+                    </ul>
+                    <table class="responsive-table bordered">
+                        <thead>
+                            <tr>
+                                <th>Selecione</th>
+                                <th>Início</th>
+                                <th>Término</th>
+                                <th>Nome</th>
+                                <th>Palestrante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="atividade in evento.atividades | filter: filtroData">
+                                <td>
+                                    <form action="">
+                                        <input name="atividades{{atividade._id}}" id="atividades{{atividade._id}}" type="checkbox" ng-change="selecionaAtividades(atividade, ativo)" ng-model="ativo" />
+                                        <label for="atividades{{atividade._id}}"></label>
+                                    </form>
+                                </td>
+                                <td>{{atividade.dataInicialAtividade | date: 'HH:mm'}}</td>
+                                <td>{{atividade.dataFinalAtividade | date: 'HH:mm'}}</td>
+                                <td>{{atividade.nome}}</td>
+                                <td>{{atividade.integrantes}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <button class="btn right" type="submit">Inscrever-me</button>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--<div class="espace">
+</div>
+-->
+<script src="../js/scripts.js "></script>

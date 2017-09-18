@@ -1,0 +1,24 @@
+<div class="fundo s12">
+    <div class="row container">
+        <p ng-show="mensagem.texto">{{mensagem.texto}}</p>
+        <div ng-repeat="evento in eventos | filter: filtro">
+            <div class="col s12 m6">
+                <ul class="collection-avatar">
+                    <div class="cardPrincipal" ui-sref="atividade({id: evento._id}) ">
+                        <img class="responsive-img" src="{{evento.urlLogo}} " alt=" ">
+                        <span class="title flow-text center-align col s12">                 
+                            <b><h5 class="white-text col s12 ">{{evento.nome}}</h5></b>                                                         
+                            <p class="white-text col s12">{{evento.descricao}}</p>
+                            <p class="white-text col s12 ">{{evento.local}}</p> 
+                            <p class="dt white-text col s12"><a ng-bind="evento.dataInicial | date: 'dd/MM/yyyy' ">
+                            </a>&nbsp;à&nbsp;<a ng-bind="evento.dataFinal | date: 'dd/MM/yyyy' "></a>
+                            </p>
+                        </span>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/scripts.js "></script>
