@@ -15,7 +15,7 @@ angular.module('inscricao').controller('InscricaoController',
 
         $scope.inscricao.eventos = [];
 
-        var verificaCpf = false;
+        var isCpf = false;
 
         $scope.vagasExcedidas = false;
 
@@ -94,9 +94,9 @@ angular.module('inscricao').controller('InscricaoController',
         $scope.verificaCpf = function() {
             if ($scope.cpf.length > 0) {
                 cpf = $scope.cpf.replace(/\./g, '').replace(/\-/g, '');
-                verificaCpf = VerificaCPF(cpf);
-                $scope.hideInscricao = verificaCpf ? true : false;
-                if (verificaCpf) {
+                isCpf = verificaCPF(cpf);
+                $scope.hideInscricao = isCpf ? true : false;
+                if (isCpf) {
 
                     $scope.verificaQtdInscritos();
 
@@ -165,49 +165,46 @@ angular.module('inscricao').controller('InscricaoController',
                 alert('Selecione ao menos uma atividade !.');
             }
         }
-
-        function VerificaCPF(strCpf) {
-
-            var soma;
-            var resto;
-            soma = 0;
-            if (strCpf == "00000000000") {
-                return false;
-            }
-
-            for (i = 1; i <= 9; i++) {
-                soma = soma + parseInt(strCpf.substring(i - 1, i)) * (11 - i);
-            }
-
-            resto = soma % 11;
-
-            if (resto == 10 || resto == 11 || resto < 2) {
-                resto = 0;
-            } else {
-                resto = 11 - resto;
-            }
-
-            if (resto != parseInt(strCpf.substring(9, 10))) {
-                return false;
-            }
-
-            soma = 0;
-
-            for (i = 1; i <= 10; i++) {
-                soma = soma + parseInt(strCpf.substring(i - 1, i)) * (12 - i);
-            }
-            resto = soma % 11;
-
-            if (resto == 10 || resto == 11 || resto < 2) {
-                resto = 0;
-            } else {
-                resto = 11 - resto;
-            }
-
-            if (resto != parseInt(strCpf.substring(10, 11))) {
-                return false;
-            }
-
-            return true;
-        }
     });
+
+    var verificaCPF = (strCpf) => {
+        var resto;
+        if (strCpf === "00000000000" || strCpf === "11111111111" || strCpf === "22222222222" || 
+            strCpf === "33333333333" || strCpf === "44444444444" || strCpf === "55555555555" || 
+            strCpf === "66666666666" || strCpf === "77777777777" || strCpf === "88888888888" || 
+            strCpf === "99999999999") {
+            return false;
+        }
+
+        resto = calculaRestoSoma(strCpf, 11, 9)
+        console.log(`Resto: ${resto}`)
+        
+        if (!verificaDigito(resto, strCpf, strCpf.substring(9, 10))) {
+             return false   
+        }
+
+        resto = calculaRestoSoma(strCpf, 12, 10)
+        console.log(`Resto: ${resto}`)
+        return verificaDigito(resto, strCpf, strCpf.substring(10, 11))
+    }
+
+    var verificaDigito = (resto, strCpf, digitoVerificador) => {
+        resto = 11 - resto;
+        if (resto > 9) {
+            resto = 0;
+        }
+
+        if (resto != parseInt(digitoVerificador)) {
+            return false;
+        }
+        return true
+    }
+
+    var calculaRestoSoma = (strCpf, numInicio, fimLaco) => {
+        let soma = 0
+        for (i = 1; i <= fimLaco; i++) {
+            let digito = parseInt(strCpf.substring(i - 1, i))
+            soma = soma + digito * (numInicio - i);
+        }
+        return soma % 11
+    }
